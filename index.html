@@ -5,77 +5,200 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Diwash Pandey</title>
     <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,500;1,300&family=JetBrains+Mono&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
         :root {
             --bg: #ffffff;
             --text: #000000;
             --line: #000000;
+            --muted: rgba(0,0,0,0.4);
         }
         .dark-mode {
             --bg: #111111;
             --text: #e0e0e0;
             --line: #444444;
+            --muted: rgba(224,224,224,0.4);
         }
         body {
             background-color: var(--bg);
             color: var(--text);
-            font-family: 'Crimson Pro', serif;
-            transition: background 0.2s ease;
+            font-family: 'Times New Roman', Times, serif;
+            transition: background 0.2s ease, color 0.2s ease;
         }
         .mono { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; }
-        
-        /* Sidebar Border */
-        .sidebar {
-            border-right: 1.5px solid var(--line);
-        }
-        
-        /* Links inspired by the screenshot */
+
+        .sidebar { border-right: 1.5px solid var(--line); }
+
         .nav-link {
             text-decoration: underline;
             text-underline-offset: 4px;
             transition: opacity 0.2s;
+            cursor: pointer;
         }
-        .nav-link:hover {
-            opacity: 0.5;
-        }
+        .nav-link:hover { opacity: 0.5; }
 
-        /* Bullet separator from screenshot */
-        .nav-item::after {
-            content: " •";
-            font-weight: bold;
-        }
+        .nav-item::after { content: " •"; font-weight: bold; }
+        .nav-item.active .nav-link { opacity: 0.4; text-decoration: none; cursor: default; }
 
         .section-divider {
             border-top: 1px solid var(--line);
             width: 100%;
             margin: 40px 0;
         }
+
+        /* Page transitions */
+        .page { display: none; animation: fadeIn 0.3s ease; }
+        .page.active { display: block; }
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+
+        /* About */
+        .about-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+        }
+
+        /* Resume timeline */
+        .timeline-item {
+            display: grid;
+            grid-template-columns: 9rem 1fr;
+            gap: 2rem;
+            padding: 1.5rem 0;
+            border-bottom: 1px solid var(--line);
+        }
+        .timeline-item:first-child { border-top: 1px solid var(--line); }
+
+        /* Status dot */
+        .status-dot {
+            display: inline-block;
+            width: 6px; height: 6px;
+            border-radius: 50%;
+            background: #22c55e;
+            animation: pulse 2s infinite;
+            margin-right: 6px;
+            vertical-align: middle;
+        }
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.3; }
+        }
+
+        /* Mobile nav drawer */
+        .mobile-nav {
+            display: none;
+            flex-direction: column;
+            gap: 0.75rem;
+            border-top: 1px solid var(--line);
+            padding: 1rem 0 1rem;
+        }
+        .mobile-nav.open { display: flex; }
+        .mobile-nav .nav-item::after { content: none; }
+        .mobile-nav .nav-item { text-align: left; }
+
+        /* Hamburger */
+        .hamburger {
+            display: none;
+            flex-direction: column;
+            gap: 5px;
+            cursor: pointer;
+            padding: 4px;
+            background: none;
+            border: none;
+        }
+        .hamburger span {
+            display: block;
+            width: 22px; height: 1.5px;
+            background: var(--text);
+            transition: transform 0.2s, opacity 0.2s;
+        }
+        .hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+        .hamburger.open span:nth-child(2) { opacity: 0; }
+        .hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+        .mobile-theme { display: none; }
+
+        @media (max-width: 767px) {
+            .sidebar {
+                border-right: none;
+                border-bottom: 1.5px solid var(--line);
+                width: 100%;
+                padding: 1rem 1.25rem 0;
+                position: sticky;
+                top: 0;
+                z-index: 50;
+                background-color: var(--bg);
+                flex-direction: column;
+                align-items: stretch;
+                text-align: left;
+            }
+            .sidebar-inner-top {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding-bottom: 0.75rem;
+            }
+            .sidebar h1 { font-size: 1.75rem; margin-bottom: 0; }
+            .sidebar .subtitle { display: none; }
+            .sidebar .desktop-nav { display: none; }
+            .sidebar #theme-toggle { display: none; }
+            .hamburger { display: flex; }
+            .mobile-theme { display: inline-block; }
+            main { padding: 1.5rem 1.25rem; }
+            .about-grid { grid-template-columns: 1fr; gap: 1.5rem; }
+            .timeline-item { grid-template-columns: 1fr; gap: 0.25rem; }
+        }
     </style>
 </head>
 <body class="min-h-screen">
 
-    <div class="flex flex-col md:flex-row min-h-screen">
-        
-        <aside class="sidebar w-full md:w-64 p-10 flex flex-col items-end text-right">
-            <h1 class="text-4xl font-light mb-2 tracking-tight">diwash</h1>
-            <p class="italic opacity-70 mb-12">Cloud, Infrastructure.</p>
-            
-            <nav class="space-y-4 mono uppercase tracking-wider">
-                <div class="nav-item"><a href="#" class="nav-link">Home</a></div>
-                <div class="nav-item"><a href="#" class="nav-link">Projects</a></div>
-                <div class="nav-item"><a href="#" class="nav-link">Lab</a></div>
-                <div class="nav-item"><a href="#" class="nav-link">Resume</a></div>
-                <div class="nav-item"><a href="#" class="nav-link">About</a></div>
-            </nav>
+<div class="flex flex-col md:flex-row min-h-screen">
 
-            <button id="theme-toggle" class="mt-auto mono border border-[var(--line)] px-2 py-1 hover:bg-[var(--text)] hover:text-[var(--bg)] transition-all">
-                MODE
-            </button>
-        </aside>
+    <!-- Sidebar -->
+    <aside class="sidebar w-full md:w-64 p-10 flex flex-col items-end text-right md:sticky md:top-0 md:h-screen">
 
-        <main class="flex-1 p-10 md:p-20 max-w-4xl">
-            
+        <!-- Mobile top bar -->
+        <div class="sidebar-inner-top w-full hidden">
+            <h1 class="text-4xl font-light tracking-tight">diwash</h1>
+            <div class="flex items-center gap-3">
+                <button class="mobile-theme mono border border-[var(--line)] px-2 py-1 text-xs" onclick="document.body.classList.toggle('dark-mode')">MODE</button>
+                <button class="hamburger" id="hamburger" aria-label="Toggle menu">
+                    <span></span><span></span><span></span>
+                </button>
+            </div>
+        </div>
+
+        <!-- Desktop header -->
+        <h1 class="text-4xl font-light mb-2 tracking-tight desktop-title">diwash</h1>
+        <p class="subtitle italic opacity-70 mb-12">Cloud, Infrastructure.</p>
+
+        <!-- Desktop nav -->
+        <nav class="desktop-nav space-y-4 mono uppercase tracking-wider">
+            <div class="nav-item active" id="nav-home"><span class="nav-link" onclick="showPage('home')">Home</span></div>
+            <div class="nav-item" id="nav-projects"><span class="nav-link" onclick="showPage('projects')">Projects</span></div>
+            <div class="nav-item" id="nav-lab"><span class="nav-link" onclick="showPage('lab')">Lab</span></div>
+            <!-- <div class="nav-item" id="nav-resume"><span class="nav-link" onclick="showPage('resume')">Resume</span></div> -->
+            <div class="nav-item" id="nav-about"><span class="nav-link" onclick="showPage('about')">About</span></div>
+        </nav>
+
+        <!-- Mobile nav drawer -->
+        <nav class="mobile-nav mono uppercase tracking-wider w-full" id="mobile-nav">
+            <div class="nav-item" id="mnav-home"><span class="nav-link" onclick="showPage('home', true)">Home</span></div>
+            <div class="nav-item" id="mnav-projects"><span class="nav-link" onclick="showPage('projects', true)">Projects</span></div>
+            <div class="nav-item" id="mnav-lab"><span class="nav-link" onclick="showPage('lab', true)">Lab</span></div>
+            <!-- <div class="nav-item" id="mnav-resume"><span class="nav-link" onclick="showPage('resume', true)">Resume</span></div> -->
+            <div class="nav-item" id="mnav-about"><span class="nav-link" onclick="showPage('about', true)">About</span></div>
+        </nav>
+
+        <button id="theme-toggle" class="mt-auto mono border border-[var(--line)] px-2 py-1 hover:bg-[var(--text)] hover:text-[var(--bg)] transition-all">
+            MODE
+        </button>
+    </aside>
+
+    <!-- Main -->
+    <main class="flex-1 p-10 md:p-20 max-w-4xl">
+
+        <!-- HOME -->
+        <div class="page active" id="page-home">
             <header class="text-center mb-20">
                 <h2 class="text-sm mono uppercase tracking-[0.3em] mb-4">Latest Deployments</h2>
                 <div class="section-divider max-w-xs mx-auto"></div>
@@ -85,9 +208,8 @@
                 <section>
                     <h3 class="text-3xl italic font-light mb-6 text-center">Systems Architect & DevOps</h3>
                     <p class="text-xl leading-relaxed text-justify md:text-left">
-                        I'm Diwash, currently based in Kathmandu with over four years of experience. I specialize in bridging the gap between development and operations to deliver highly available, secure systems. Currently working at 
-                        <a href="https://evolveasia.co" target="_blank" class="text-[var(--accent)] underline underline-offset-4 hover:opacity-70">
-        Evolve Pvt Ltd 
+                        I'm Diwash, currently based in Kathmandu with over four years of experience. I specialize in bridging the gap between development and operations to deliver highly available, secure systems. Currently working at
+                        <a href="https://evolveasia.co" target="_blank" class="underline underline-offset-4 hover:opacity-70">Evolve Pvt Ltd</a>.
                     </p>
                 </section>
 
@@ -123,14 +245,201 @@
             <footer class="mt-32 text-center text-xs mono opacity-30">
                 (Last updated: April 2026, WIP)
             </footer>
-        </main>
+        </div>
 
-    </div>
+        <!-- PROJECTS — blank, add content here when ready -->
+        <div class="page" id="page-projects">
+            <header class="text-center mb-20">
+                <h2 class="text-sm mono uppercase tracking-[0.3em] mb-4">Selected Work</h2>
+                <div class="section-divider max-w-xs mx-auto"></div>
+            </header>
+        </div>
 
-    <script>
-        const btn = document.getElementById('theme-toggle');
-        const body = document.body;
-        btn.addEventListener('click', () => body.classList.toggle('dark-mode'));
-    </script>
+        <!-- LAB — blank, add content here when ready -->
+        <div class="page" id="page-lab">
+            <header class="text-center mb-20">
+                <h2 class="text-sm mono uppercase tracking-[0.3em] mb-4">Experiments & Notes</h2>
+                <div class="section-divider max-w-xs mx-auto"></div>
+            </header>
+        </div>
+
+        <!-- ABOUT -->
+        <div class="page" id="page-about">
+            <header class="text-center mb-20">
+                <h2 class="text-sm mono uppercase tracking-[0.3em] mb-4">About</h2>
+                <div class="section-divider max-w-xs mx-auto"></div>
+            </header>
+
+            <section class="mb-16">
+                <h3 class="text-3xl italic font-light mb-8">
+                    <span class="status-dot"></span>About me
+                </h3>
+                <p class="text-xl leading-relaxed mb-6 opacity-80">
+                    I'm Diwash Pandey, a DevOps Engineer with interest on automation, cloud infrastructure and buidling scalable secure system.
+                </p>
+                <p class="text-xl leading-relaxed opacity-80">
+                    
+                </p>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <section class="about-grid mb-16">
+                <div>
+                    <h4 class="text-sm mono uppercase tracking-widest mb-6 opacity-50">Currently</h4>
+                    <ul class="space-y-3 text-lg opacity-80">
+                        <li>→ DevOps Engineer @ Evolve Pvt Ltd</li>
+                        <li>→ Kathmandu, Nepal</li>
+                        <li>→ Open to remote contracts</li>
+                    </ul>
+                </div>
+                <div>
+                    <h4 class="text-sm mono uppercase tracking-widest mb-6 opacity-50">Interests</h4>
+                    <ul class="space-y-3 text-lg opacity-80">
+                        <li>→ Linux</li>
+                        <li>→ Homelab tinkering</li>
+                        <li>→ Automation</li>
+                    </ul>
+                </div>
+            </section>
+
+            <div class="section-divider"></div>
+
+            <section>
+                <h4 class="text-sm mono uppercase tracking-widest mb-8 opacity-50">Contact</h4>
+                <div class="space-y-3 text-lg">
+                    <div>
+                        <span class="mono text-xs opacity-40 mr-4">Email</span>
+                        <a href="mailto:diwash.pandey18@gmail.com" class="underline underline-offset-4 hover:opacity-50">diwash.pandey18@gmail.com</a>
+                    </div>
+                    <div>
+                        <span class="mono text-xs opacity-40 mr-4">GitHub</span>
+                        <a href="https://github.com/" target="_blank" class="underline underline-offset-4 hover:opacity-50">github.com/diwashx</a>
+                    </div>
+                    <div>
+                        <span class="mono text-xs opacity-40 mr-4">LinkedIn</span>
+                        <a href="https://linkedin.com/" target="_blank" class="underline underline-offset-4 hover:opacity-50">linkedin.com/in/diwash</a>
+                    </div>
+                </div>
+            </section>
+
+            <footer class="mt-32 text-center text-xs mono opacity-30">
+                (Last updated: April 2026, WIP)
+            </footer>
+        </div>
+
+        <!--
+        =============================================
+        RESUME — uncomment this entire block when ready
+        =============================================
+        <div class="page" id="page-resume">
+            <header class="text-center mb-20">
+                <h2 class="text-sm mono uppercase tracking-[0.3em] mb-4">Curriculum Vitae</h2>
+                <div class="section-divider max-w-xs mx-auto"></div>
+            </header>
+            <section class="mb-16">
+                <h3 class="text-sm mono uppercase tracking-widest mb-8 opacity-50">Experience</h3>
+                <div class="timeline-item">
+                    <div class="mono text-xs opacity-50 pt-1">2022 — Present</div>
+                    <div>
+                        <h4 class="text-xl italic font-light mb-1">DevOps Engineer</h4>
+                        <p class="mono text-xs mb-3">Evolve Pvt Ltd · Kathmandu</p>
+                        <p class="opacity-80 leading-relaxed">Leading cloud infrastructure design, CI/CD pipeline architecture, and SRE practices.</p>
+                    </div>
+                </div>
+                <div class="timeline-item">
+                    <div class="mono text-xs opacity-50 pt-1">2020 — 2022</div>
+                    <div>
+                        <h4 class="text-xl italic font-light mb-1">Systems Administrator</h4>
+                        <p class="mono text-xs mb-3">Previous Company · Kathmandu</p>
+                        <p class="opacity-80 leading-relaxed">Managed on-premise and hybrid cloud infrastructure.</p>
+                    </div>
+                </div>
+            </section>
+            <section class="mb-16">
+                <h3 class="text-sm mono uppercase tracking-widest mb-8 opacity-50">Education</h3>
+                <div class="timeline-item">
+                    <div class="mono text-xs opacity-50 pt-1">2016 — 2020</div>
+                    <div>
+                        <h4 class="text-xl italic font-light mb-1">B.E. Computer Engineering</h4>
+                        <p class="mono text-xs mb-3">Tribhuvan University · Kathmandu</p>
+                    </div>
+                </div>
+            </section>
+            <section class="mb-16">
+                <h3 class="text-sm mono uppercase tracking-widest mb-8 opacity-50">Certifications</h3>
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-4 mono text-xs">
+                    <div class="border border-[var(--line)] p-4"><div class="opacity-50 mb-1">AWS</div><div>Solutions Architect — Associate</div></div>
+                    <div class="border border-[var(--line)] p-4"><div class="opacity-50 mb-1">CNCF</div><div>Certified Kubernetes Administrator</div></div>
+                    <div class="border border-[var(--line)] p-4"><div class="opacity-50 mb-1">HashiCorp</div><div>Terraform Associate</div></div>
+                    <div class="border border-[var(--line)] p-4"><div class="opacity-50 mb-1">CompTIA</div><div>Security+</div></div>
+                </div>
+            </section>
+            <div class="text-center">
+                <button onclick="window.print()" class="mono text-xs border border-[var(--line)] px-4 py-2 hover:bg-[var(--text)] hover:text-[var(--bg)] transition-all uppercase tracking-wider">↓ Download / Print</button>
+            </div>
+        </div>
+        Also uncomment nav items for resume above when enabling this page.
+        ============================================= -->
+
+    </main>
+</div>
+
+<script>
+    // Theme toggle (desktop button)
+    const btn = document.getElementById('theme-toggle');
+    btn.addEventListener('click', () => document.body.classList.toggle('dark-mode'));
+
+    // Hamburger
+    const hamburger = document.getElementById('hamburger');
+    const mobileNav = document.getElementById('mobile-nav');
+    hamburger.addEventListener('click', () => {
+        hamburger.classList.toggle('open');
+        mobileNav.classList.toggle('open');
+    });
+
+    // Page routing
+    function showPage(name, fromMobile) {
+        document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+        document.querySelectorAll('.nav-item').forEach(n => n.classList.remove('active'));
+
+        document.getElementById('page-' + name).classList.add('active');
+        const dNav = document.getElementById('nav-' + name);
+        const mNav = document.getElementById('mnav-' + name);
+        if (dNav) dNav.classList.add('active');
+        if (mNav) mNav.classList.add('active');
+
+        if (fromMobile) {
+            mobileNav.classList.remove('open');
+            hamburger.classList.remove('open');
+        }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Mobile layout toggle
+    function applyMobileLayout() {
+        const isMobile = window.innerWidth < 768;
+        const mobileBar = document.querySelector('.sidebar-inner-top');
+        const desktopTitle = document.querySelector('.desktop-title');
+        const subtitle = document.querySelector('.subtitle');
+
+        if (isMobile) {
+            mobileBar.classList.remove('hidden');
+            if (desktopTitle) desktopTitle.style.display = 'none';
+            if (subtitle) subtitle.style.display = 'none';
+        } else {
+            mobileBar.classList.add('hidden');
+            if (desktopTitle) desktopTitle.style.display = '';
+            if (subtitle) subtitle.style.display = '';
+            mobileNav.classList.remove('open');
+            hamburger.classList.remove('open');
+        }
+    }
+
+    applyMobileLayout();
+    window.addEventListener('resize', applyMobileLayout);
+    showPage('home');
+</script>
 </body>
 </html>
