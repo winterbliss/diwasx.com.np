@@ -3,214 +3,134 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Website Under Construction</title>
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>Diwash Pandey</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Crimson+Pro:ital,wght@0,300;0,500;1,300&family=JetBrains+Mono&display=swap" rel="stylesheet">
     <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+        :root {
+            --bg: #ffffff;
+            --text: #000000;
+            --line: #000000;
         }
-
+        .dark-mode {
+            --bg: #111111;
+            --text: #e0e0e0;
+            --line: #444444;
+        }
         body {
-            font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-            background-color: #f9f9f9;
-            color: #333;
-            line-height: 1.6;
-            min-height: 100vh;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            padding: 20px;
+            background-color: var(--bg);
+            color: var(--text);
+            font-family: 'Crimson Pro', serif;
+            transition: background 0.2s ease;
         }
-
-        .container {
-            max-width: 700px;
-            width: 100%;
-            text-align: center;
-            padding: 50px 40px;
-            background-color: white;
-            border-radius: 12px;
-            box-shadow: 0 5px 20px rgba(0, 0, 0, 0.05);
-            position: relative;
-            overflow: hidden;
+        .mono { font-family: 'JetBrains Mono', monospace; font-size: 0.8rem; }
+        
+        /* Sidebar Border */
+        .sidebar {
+            border-right: 1.5px solid var(--line);
         }
-
-        .container::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 4px;
-            background: linear-gradient(90deg, #4a90e2, #63d3ff, #4a90e2);
-            background-size: 200% 100%;
-            animation: gradientMove 3s ease infinite;
-        }
-
-        .logo {
-            margin-bottom: 30px;
-            font-weight: 700;
-            font-size: 2rem;
-            letter-spacing: -0.5px;
-            color: #2c3e50;
-        }
-
-        .logo span {
-            color: #4a90e2;
-        }
-
-        h1 {
-            font-size: 2.5rem;
-            font-weight: 300;
-            margin-bottom: 15px;
-            color: #2c3e50;
-        }
-
-        .highlight {
-            font-weight: 600;
-            color: #4a90e2;
-        }
-
-        p {
-            font-size: 1.1rem;
-            color: #666;
-            margin-bottom: 30px;
-            max-width: 500px;
-            margin-left: auto;
-            margin-right: auto;
-        }
-
-        .construction-icon {
-            font-size: 4rem;
-            color: #4a90e2;
-            margin: 30px 0;
-            display: inline-block;
-            animation: float 3s ease-in-out infinite;
-        }
-
-        .progress-container {
-            width: 100%;
-            height: 6px;
-            background-color: #eaeaea;
-            border-radius: 3px;
-            margin: 40px 0 50px;
-            overflow: hidden;
-        }
-
-        .progress-bar {
-            height: 100%;
-            width: 65%;
-            background: linear-gradient(90deg, #4a90e2, #63d3ff);
-            border-radius: 3px;
-            animation: progressAnimation 2s ease-in-out infinite alternate;
-        }
-
-        .contact-info {
-            margin-top: 30px;
-            padding-top: 30px;
-            border-top: 1px solid #eee;
-        }
-
-        .contact-info p {
-            margin-bottom: 10px;
-            font-size: 1rem;
-        }
-
-        .email {
-            color: #4a90e2;
-            text-decoration: none;
-            font-weight: 500;
-            transition: color 0.3s;
-            font-size: 1.1rem;
-        }
-
-        .email:hover {
-            color: #2c3e50;
+        
+        /* Links inspired by the screenshot */
+        .nav-link {
             text-decoration: underline;
+            text-underline-offset: 4px;
+            transition: opacity 0.2s;
+        }
+        .nav-link:hover {
+            opacity: 0.5;
         }
 
-        .footer {
-            margin-top: 40px;
-            color: #999;
-            font-size: 0.9rem;
+        /* Bullet separator from screenshot */
+        .nav-item::after {
+            content: " •";
+            font-weight: bold;
         }
 
-        /* Animations */
-        @keyframes float {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-
-        @keyframes gradientMove {
-            0% { background-position: 0% 50%; }
-            50% { background-position: 100% 50%; }
-            100% { background-position: 0% 50%; }
-        }
-
-        @keyframes progressAnimation {
-            0% { width: 65%; }
-            100% { width: 70%; }
-        }
-
-        /* Responsive adjustments */
-        @media (max-width: 768px) {
-            .container {
-                padding: 40px 25px;
-            }
-
-            h1 {
-                font-size: 2rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            h1 {
-                font-size: 1.7rem;
-            }
-
-            p {
-                font-size: 1rem;
-            }
-
-            .construction-icon {
-                font-size: 3rem;
-            }
+        .section-divider {
+            border-top: 1px solid var(--line);
+            width: 100%;
+            margin: 40px 0;
         }
     </style>
 </head>
-<body>
-    <div class="container">
-        <div class="logo"><span></span></div>
+<body class="min-h-screen">
 
-        <div class="construction-icon">
-            <i class="fas fa-tools"></i>
-        </div>
+    <div class="flex flex-col md:flex-row min-h-screen">
+        
+        <aside class="sidebar w-full md:w-64 p-10 flex flex-col items-end text-right">
+            <h1 class="text-4xl font-light mb-2 tracking-tight">diwash</h1>
+            <p class="italic opacity-70 mb-12">Cloud, Infrastructure.</p>
+            
+            <nav class="space-y-4 mono uppercase tracking-wider">
+                <div class="nav-item"><a href="#" class="nav-link">Home</a></div>
+                <div class="nav-item"><a href="#" class="nav-link">Projects</a></div>
+                <div class="nav-item"><a href="#" class="nav-link">Lab</a></div>
+                <div class="nav-item"><a href="#" class="nav-link">Resume</a></div>
+                <div class="nav-item"><a href="#" class="nav-link">About</a></div>
+            </nav>
 
-        <h1>We're <span class="highlight">Under Construction</span></h1>
+            <button id="theme-toggle" class="mt-auto mono border border-[var(--line)] px-2 py-1 hover:bg-[var(--text)] hover:text-[var(--bg)] transition-all">
+                MODE
+            </button>
+        </aside>
 
-        <p>Our website is currently undergoing a major update. We're working hard to create a better experience for you and will be back online soon.</p>
+        <main class="flex-1 p-10 md:p-20 max-w-4xl">
+            
+            <header class="text-center mb-20">
+                <h2 class="text-sm mono uppercase tracking-[0.3em] mb-4">Latest Deployments</h2>
+                <div class="section-divider max-w-xs mx-auto"></div>
+            </header>
 
-        <div class="progress-container">
-            <div class="progress-bar"></div>
-        </div>
+            <article class="space-y-12">
+                <section>
+                    <h3 class="text-3xl italic font-light mb-6 text-center">Systems Architect & DevOps</h3>
+                    <p class="text-xl leading-relaxed text-justify md:text-left">
+                        I'm Diwash, currently based in Kathmandu with over four years of experience. I specialize in bridging the gap between development and operations to deliver highly available, secure systems. Currently working at 
+                        <a href="https://evolveasia.co" target="_blank" class="text-[var(--accent)] underline underline-offset-4 hover:opacity-70">
+        Evolve Pvt Ltd 
+                    </p>
+                </section>
 
+                <div class="py-20 flex justify-center opacity-40">
+                    <svg width="200" height="120" viewBox="0 0 200 120" class="stroke-[var(--text)] fill-none">
+                        <circle cx="50" cy="60" r="4" fill="currentColor"/>
+                        <circle cx="100" cy="30" r="4" fill="currentColor"/>
+                        <circle cx="100" cy="90" r="4" fill="currentColor"/>
+                        <circle cx="150" cy="60" r="4" fill="currentColor"/>
+                        <path d="M50 60 L100 30 L150 60 L100 90 Z M100 30 L100 90" stroke-width="0.5"/>
+                    </svg>
+                </div>
 
-        <div class="footer">
-            &copy; 2026. All rights reserved.
-        </div>
+                <section class="space-y-8">
+                    <div class="text-center">
+                        <h4 class="text-sm mono uppercase tracking-widest underline underline-offset-8">Core Competencies</h4>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-10 mono text-xs opacity-80 pt-8">
+                        <div>
+                            [01] KUBERNETES & DOCKER<br>
+                            [02] TERRAFORM & IAAS<br>
+                            [03] CI/CD PIPELINES
+                        </div>
+                        <div>
+                            [04] AWS ECOSYSTEM<br>
+                            [05] SITE RELIABILITY<br>
+                            [06] CYBERSECURITY
+                        </div>
+                    </div>
+                </section>
+            </article>
+
+            <footer class="mt-32 text-center text-xs mono opacity-30">
+                (Last updated: April 2026, WIP)
+            </footer>
+        </main>
+
     </div>
 
     <script>
-        // Add subtle hover effect to the container
-        document.querySelector('.container').addEventListener('mouseenter', function() {
-            this.style.transform = 'translateY(-5px)';
-            this.style.transition = 'transform 0.3s ease';
-        });
-
-        document.querySelector('.container').addEventListener('mouseleave', function() {
-            this.style.transform = 'translateY(0)';
-        });
+        const btn = document.getElementById('theme-toggle');
+        const body = document.body;
+        btn.addEventListener('click', () => body.classList.toggle('dark-mode'));
     </script>
 </body>
 </html>
